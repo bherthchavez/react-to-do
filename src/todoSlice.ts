@@ -27,7 +27,6 @@ export const fetchTodo = createAsyncThunk("todo/fetchTodo", async (_data, { reje
 
 
 
-// Define the initial state using that type
 const initialState: InitialState = {
   todo: [],
   loading: false,
@@ -36,7 +35,6 @@ const initialState: InitialState = {
 
 export const todoSlice = createSlice({
   name: "todo",
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
     addTask: (_state, action) => {
@@ -77,7 +75,6 @@ export const todoSlice = createSlice({
         console.log(error.message);
       });
     },
-    // Use the PayloadAction type to declare the contents of `action.payload`
     deleteTask: (_state, action) => {
       const { id } = action.payload;
       firestore.collection('todo')
@@ -93,18 +90,16 @@ export const todoSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // The pending case sets the loading state to true
       .addCase(fetchTodo.pending, (state) => {
         state.loading = true
         state.error = null
       })
-      // The fulfilled case updates the loading state to false and stores the fetched users' data
       .addCase(fetchTodo.fulfilled, (state, action) => {
         state.loading = false
         state.error = null
         state.todo = action.payload.sort((a:any, b:any) => (a.completed === b.completed) ? 0 : a.completed ? 1 : -1)  as WritableDraft<ToDo>[]
       })
-      // The rejected case sets the loading state to false and stores the error message.
+
       .addCase(fetchTodo.rejected, (state, action) => {
         state.loading = false
         state.error = action.error.message
@@ -114,7 +109,7 @@ export const todoSlice = createSlice({
 
 export const { addTask, updateTask, updateCompleted, deleteTask } = todoSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
+
 export const selectCount = (state: RootState) => state.toDo;
 
 export default todoSlice.reducer;

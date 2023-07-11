@@ -25,7 +25,6 @@ function App() {
 
   useEffect(() => {
     fetchTask ? "refetch" : "refetch";
-
     void dispatch(fetchTodo());
   }, [dispatch, fetchTask]);
 
