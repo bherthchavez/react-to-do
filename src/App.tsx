@@ -71,10 +71,11 @@ function App() {
     tasks.map((task) => (
       <div
         key={task.id}
-        onClick={() => handleCompletTask(task.id, task.task, task.completed)}
-        className="flex justify-between hover:bg-yellow-100 p-2 rounded-lg cursor-pointer"
+        className="flex justify-between hover:bg-yellow-100 p-2 rounded-lg"
       >
-        <div className="flex gap-3 pr-5">
+        <div
+         onClick={() => handleCompletTask(task.id, task.task, task.completed)}
+        className="flex gap-3 pr-5 cursor-pointer ">
           <input
             type="checkbox"
             className="accent-slate-200 bg-gray-900 cursor-pointer"
@@ -142,14 +143,14 @@ function App() {
             {task.id && (
               <div
                 onClick={() => setTask({ id: "", task: "", completed: false })}
-                className="rounded-full bg-red-500 p-2  hover:bg-red-600 text-xl border-2 cursor-pointer"
+                className="rounded-full bg-red-400 p-2  hover:bg-red-600 text-xl border-2 cursor-pointer"
                 title="Close"
               >
                 <MdOutlineClose />
               </div>
             )}
             <button
-              className="rounded-full bg-blue-500 p-2  hover:bg-blue-600 text-xl border-2"
+              className={task.id ? `rounded-full bg-green-500 p-2  hover:bg-green-700 text-xl border-2` : `rounded-full bg-blue-500 p-2  hover:bg-blue-600 text-xl border-2` }
               title="Add"
             >
               {task.id ? <MdSave /> : <MdAdd />}
