@@ -39,12 +39,6 @@ function App() {
     setFetchTask((prev) => !prev);
   };
 
-  const handleAddTask = () => {
-    dispatch(addTask({ task: task.task, completed: false }));
-    setTask({ id: "", task: "", completed: false });
-    setTimeout(reFetched, 50);
-  };
-
   const handleCompletTask = (
     id: string,
     task: string,
@@ -54,27 +48,36 @@ function App() {
     setTimeout(reFetched, 50);
   };
 
-  const handleEditTask = (): void => {
-    console.log(task);
-    dispatch(
-      updateTask({ id: task.id, task: task.task, completed: task.completed })
-    );
-    setTask({ id: "", task: "", completed: false });
-    setTimeout(reFetched, 50);
-  };
-
   const handleDeleteTask = (id: string): void => {
     dispatch(deleteTask({ id }));
     setTimeout(reFetched, 50);
   };
 
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+
+    if (task.id) {
+      dispatch(
+        updateTask({ id: task.id, task: task.task, completed: task.completed })
+      );
+    } else {
+      dispatch(addTask({ task: task.task, completed: false }));
+    }
+    setTask({ id: "", task: "", completed: false });
+    setTimeout(reFetched, 50);
+  };
+
   const renderTasks = () =>
     tasks.map((task) => (
-      <div key={task.id} className="flex justify-between">
+      <div
+        key={task.id}
+        onClick={() => handleCompletTask(task.id, task.task, task.completed)}
+        className="flex justify-between hover:bg-yellow-100 p-2 rounded-lg cursor-pointer"
+      >
         <div className="flex gap-3 pr-5">
           <input
             type="checkbox"
-            className="accent-slate-200 bg-gray-900"
+            className="accent-slate-200 bg-gray-900 cursor-pointer"
             id={task.id}
             checked={task.completed}
             onChange={() =>
@@ -83,7 +86,11 @@ function App() {
           />
           <label
             htmlFor={task.id}
-            className={task.completed ? `line-through text-gray-400` : "text-gray-900 font-semibold"}
+            className={
+              task.completed
+                ? `line-through text-gray-400 cursor-pointer`
+                : `text-gray-900 font-semibold cursor-pointer`
+            }
           >
             {task.task}
           </label>
@@ -119,7 +126,11 @@ function App() {
     <>
       <div className="relative flex flex-col justify-center gap-5 items-center text-white pt-10 px-5 sm:px-0">
         <h1 className="text-gray-500 text-xl font-bold">To Do App</h1>
-        <div className="flex w-full border max-w-[600px] m-auto rounded-lg p-2 shadow-md bg-white">
+
+        <form
+          onSubmit={handleOnSubmit}
+          className="flex w-full border max-w-[600px] m-auto rounded-lg p-2 shadow-md bg-white"
+        >
           <input
             className="text-gray-900 font-medium p-3 w-full focus:outline-none"
             type="text"
@@ -129,25 +140,24 @@ function App() {
           />
           <div className="flex gap-2 p-2">
             {task.id && (
-              <button
+              <div
                 onClick={() => setTask({ id: "", task: "", completed: false })}
-                className="rounded-full bg-red-500 p-2  hover:bg-red-600 text-xl border-2"
+                className="rounded-full bg-red-500 p-2  hover:bg-red-600 text-xl border-2 cursor-pointer"
                 title="Close"
               >
                 <MdOutlineClose />
-              </button>
+              </div>
             )}
             <button
-              onClick={() => (task.id ? handleEditTask() : handleAddTask())}
-              className="rounded-full bg-gray-500 p-2  hover:bg-gray-600 text-xl border-2"
+              className="rounded-full bg-blue-500 p-2  hover:bg-blue-600 text-xl border-2"
               title="Add"
             >
               {task.id ? <MdSave /> : <MdAdd />}
             </button>
           </div>
-        </div>
-        <div className=" w-full border max-w-[600px] m-auto rounded p-6 bg-white">
-          <div className="text-gray-500 flex flex-col gap-6">
+        </form>
+        <div className=" w-full border max-w-[600px] m-auto rounded-lg p-6 bg-white">
+          <div className="text-gray-500 flex flex-col gap-3">
             {tasks.length ? (
               renderTasks()
             ) : (
