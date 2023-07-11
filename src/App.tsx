@@ -75,7 +75,7 @@ function App() {
       >
         <div
          onClick={() => handleCompletTask(task.id, task.task, task.completed)}
-        className="flex gap-3 pr-5 cursor-pointer ">
+         className="flex gap-3  cursor-pointer w-full items-center">
           <input
             type="checkbox"
             className="accent-slate-200 bg-gray-900 cursor-pointer"
@@ -96,7 +96,7 @@ function App() {
             {task.task}
           </label>
         </div>
-        <div className="flex gap-4 text-slate-400">
+        <div className="flex text-slate-400 m-auto p-1">
           {!task.completed && (
             <button
               onClick={() =>
@@ -106,7 +106,7 @@ function App() {
                   completed: task.completed,
                 })
               }
-              className=" hover:text-slate-600 text-sm  rounded"
+              className=" hover:text-slate-600 hover:bg-slate-200 text-sm  rounded-full p-2"
               title="Edit Task"
             >
               <MdModeEdit size={20} />
@@ -114,7 +114,7 @@ function App() {
           )}
           <button
             onClick={() => handleDeleteTask(task.id)}
-            className=" hover:text-slate-600  text-sm rounded"
+            className=" hover:text-slate-600  hover:bg-red-200 text-sm  rounded-full p-2"
             title="Delete Task"
           >
             <MdDeleteOutline size={20} />
@@ -157,7 +157,7 @@ function App() {
             </button>
           </div>
         </form>
-        <div className=" w-full border max-w-[600px] m-auto rounded-lg p-6 bg-white">
+        <div className=" w-full border max-w-[600px] m-auto rounded-lg p-3 bg-white">
           <div className="text-gray-500 flex flex-col gap-3">
             {tasks.length ? (
               renderTasks()
