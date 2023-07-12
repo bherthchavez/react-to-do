@@ -84,6 +84,7 @@ function App() {
             onChange={() =>
               handleCompletTask(task.id, task.task, task.completed)
             }
+            onClick={()=>handleCompletTask(task.id, task.task, task.completed) }
           />
           <label
             htmlFor={task.id}
